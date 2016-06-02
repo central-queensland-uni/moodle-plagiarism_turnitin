@@ -11,6 +11,7 @@ $string['turnitintooltwo'] = 'Turnitin Tool';
 $string['turnitin'] = 'Turnitin';
 $string['task_name'] = 'Turnitin Plagiarism Plugin Task';
 $string['connecttesterror'] = 'There was an error connecting to Turnitin the return error message is below:<br />';
+$string['tiinotice'] = 'Turnitin notice';
 
 // Assignment Settings
 $string['turnitin:enable'] = 'Enable Turnitin';
@@ -107,6 +108,7 @@ $string['id'] = 'Id';
 $string['student'] = 'Student';
 $string['course'] = 'Course';
 $string['module'] = 'Module';
+$string['usehovernotice'] = 'Display notices as a popup on hover';
 
 // Grade book/View assignment page
 $string['turnitin:viewfullreport'] = 'View Originality Report';
