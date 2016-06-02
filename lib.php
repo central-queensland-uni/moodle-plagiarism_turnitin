@@ -71,7 +71,7 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
      * @return array of settings fields
      */
     public function get_settings_fields() {
-        return array('use_turnitin', 'plagiarism_show_student_report', 'plagiarism_draft_submit',
+        return array('use_turnitin', 'plagiarism_use_hover_notice', 'plagiarism_show_student_report', 'plagiarism_draft_submit',
                         'plagiarism_allow_non_or_submissions', 'plagiarism_submitpapersto', 'plagiarism_compare_student_papers',
                         'plagiarism_compare_internet', 'plagiarism_compare_journals', 'plagiarism_report_gen',
                         'plagiarism_compare_institution', 'plagiarism_exclude_biblio', 'plagiarism_exclude_quoted',
@@ -971,6 +971,33 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
 
                     } else if ($plagiarismfile->statuscode == 'error') {
 
+                        // Lets see if we need to use the hover for notices.
+                        $usehover = $plagiarismsettings['plagiarism_use_hover_notice'];
+
+                        // Define an info variable if we want to use hover.
+                        $info = '';
+
+                        // Define hover text to show instead of normal errors.
+                        $hoverstr = get_string('tiinotice', 'plagiarism_turnitin');
+                        $hover = html_writer::tag(
+                            'div',
+                            $OUTPUT->pix_icon(
+                                'info',
+                                $hoverstr,
+                                'plagiarism_turnitint',
+                                array('class' => 'icon_size')
+                            ).$hoverstr,
+                            array('class' => 'turnitin_notice')
+                        );
+
+                        // If we have hover set, use it.
+                        if ($usehover) {
+
+                            $info .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_outer'));
+                            $info .= $hover;
+                            $info .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_inner'));
+                        }
+
                         // Deal with legacy error issues.
                         $errorcode = (isset($plagiarismfile->errorcode)) ? $plagiarismfile->errorcode : 0;
                         if ($errorcode == 0 && $submissiontype == 'file') {
@@ -996,27 +1023,27 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                         // Attach error text or resubmit link after icon depending on whether user is a student/teacher.
                         // Don't attach resubmit link if the user has not accepted the EULA.
                         if (!$istutor) {
-                            $output .= html_writer::tag('div', $erroricon.' '.$errorstring, array('class' => 'warning clear'));
+                            $info .= html_writer::tag('div', $erroricon.' '.$errorstring, array('class' => 'warning clear'));
                         } else if ($errorcode == 3) {
-                            $output .= html_writer::tag('div', $erroricon, array('class' => 'clear'));
+                            $info .= html_writer::tag('div', $erroricon, array('class' => 'clear'));
                         } else {
-                            $output .= html_writer::tag('div', $erroricon.' '.get_string('resubmittoturnitin', 'plagiarism_turnitin'),
-                                                        array('class' => 'clear pp_resubmit_link',
+                            $info .= html_writer::tag('div', $erroricon.' '.get_string('resubmittoturnitin', 'plagiarism_turnitin'),
+                                                        array('class' => 'warning clear pp_resubmit_link',
                                                                 'id' => 'pp_resubmit_'.$plagiarismfile->id));
 
-                            $output .= html_writer::tag('div',
+                            $info .= html_writer::tag('div',
                                                         $OUTPUT->pix_icon('loading', $errorstring, 'plagiarism_turnitin').' '.
                                                         get_string('resubmitting', 'plagiarism_turnitin'),
                                                         array('class' => 'pp_resubmitting hidden'));
 
                             // Pending status for after resubmission.
                             $statusstr = get_string('turnitinstatus', 'plagiarism_turnitin').': '.get_string('pending', 'plagiarism_turnitin');
-                            $output .= html_writer::tag('div', $OUTPUT->pix_icon('tiiIcon', $statusstr, 'plagiarism_turnitin', array('class' => 'icon_size')).$statusstr,
+                            $info .= html_writer::tag('div', $OUTPUT->pix_icon('tiiIcon', $statusstr, 'plagiarism_turnitin', array('class' => 'icon_size')).$statusstr,
                                                         array('class' => 'turnitin_status hidden'));
 
                             // Show hidden data for potential forum post resubmissions
                             if ($submissiontype == 'forum_post' && !empty($linkarray["content"])) {
-                                $output .= html_writer::tag('div', $linkarray["content"],
+                                $info .= html_writer::tag('div', $linkarray["content"],
                                                             array('class' => 'hidden', 'id' => 'content_'.$plagiarismfile->id));
                             }
 
@@ -1031,6 +1058,16 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                                             array('class' => 'hidden', 'id' => 'forumdata_'.$plagiarismfile->id));
                             }
                         }
+
+                        if ($usehover) {
+
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_outer div.
+                        }
+
+                        // Now add info to output.
+                        $output .= $info;
+
                     } else if ($plagiarismfile->statuscode == 'deleted'){
                         $errorcode = (isset($plagiarismfile->errorcode)) ? $plagiarismfile->errorcode : 0;
                         if ($errorcode == 0) {
