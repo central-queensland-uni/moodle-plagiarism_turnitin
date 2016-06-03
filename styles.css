@@ -133,6 +133,32 @@
     cursor: normal;
 }
 
+.turnitin_notice {
+    padding: 4 0 4 0;
+    color: #aaa;
+}
+
+.turnitin_notice img {
+    vertical-align: text-bottom;
+    padding-right: 6px;
+    top: 2px;
+}
+
+.tii_notice_hover_outer .tii_notice_hover_inner {
+    display: none;
+    position: absolute;
+    z-index: 20;
+}
+
+.tii_notice_hover_inner {
+    display: block;
+    position: absolute;
+}
+
+.tii_notice_hover_outer:hover .tii_notice_hover_inner {
+    display: block;
+}
+
 .tii_links_container .turnitin_status {
     white-space:nowrap;
 }
