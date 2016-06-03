@@ -984,7 +984,7 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                             $OUTPUT->pix_icon(
                                 'info',
                                 $hoverstr,
-                                'plagiarism_turnitint',
+                                'plagiarism_turnitin',
                                 array('class' => 'icon_size')
                             ).$hoverstr,
                             array('class' => 'turnitin_notice')
