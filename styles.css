@@ -134,7 +134,8 @@
 }
 
 .turnitin_notice {
-    padding: 4 0 4 0;
+    padding-top: 1px;
+    padding-bottom: 4px;
     color: #aaa;
 }
 
