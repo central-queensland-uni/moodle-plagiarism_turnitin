@@ -1020,6 +1020,13 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                                                 array('title' => $errorstring,
                                                                         'class' => 'tii_tooltip tii_error_icon'));
 
+
+                        if ($usehover) {
+
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_outer div.
+                        }
+
                         // Attach error text or resubmit link after icon depending on whether user is a student/teacher.
                         // Don't attach resubmit link if the user has not accepted the EULA.
                         if (!$istutor) {
@@ -1057,12 +1064,6 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                 $output .= html_writer::tag('div', $querystrid.'_'.$discussionid.'_'.$reply.'_'.$edit.'_'.$delete,
                                                             array('class' => 'hidden', 'id' => 'forumdata_'.$plagiarismfile->id));
                             }
-                        }
-
-                        if ($usehover) {
-
-                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
-                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_outer div.
                         }
 
                         // Now add info to output.
