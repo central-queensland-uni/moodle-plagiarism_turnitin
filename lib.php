@@ -1020,7 +1020,6 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                                                 array('title' => $errorstring,
                                                                         'class' => 'tii_tooltip tii_error_icon'));
 
-
                         if ($usehover) {
 
                             $info .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
@@ -1070,6 +1069,34 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                         $output .= $info;
 
                     } else if ($plagiarismfile->statuscode == 'deleted'){
+
+                        // Lets see if we need to use the hover for notices.
+                        $usehover = $plagiarismsettings['plagiarism_use_hover_notice'];
+
+                        // Define an info variable if we want to use hover.
+                        $info = '';
+
+                        // Define hover text to show instead of normal errors.
+                        $hoverstr = get_string('tiinotice', 'plagiarism_turnitin');
+                        $hover = html_writer::tag(
+                            'div',
+                            $OUTPUT->pix_icon(
+                                'info',
+                                $hoverstr,
+                                'plagiarism_turnitin',
+                                array('class' => 'icon_size')
+                            ).$hoverstr,
+                            array('class' => 'turnitin_notice')
+                        );
+
+                        // If we have hover set, use it.
+                        if ($usehover) {
+
+                            $info .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_outer'));
+                            $info .= $hover;
+                            $info .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_inner'));
+                        }
+
                         $errorcode = (isset($plagiarismfile->errorcode)) ? $plagiarismfile->errorcode : 0;
                         if ($errorcode == 0) {
                             $langstring = ($istutor) ? 'ppsubmissionerrorseelogs' : 'ppsubmissionerrorstudent';
@@ -1081,9 +1108,17 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                         }
                         $statusstr = get_string('turnitinstatus', 'plagiarism_turnitin').': '.get_string('deleted', 'plagiarism_turnitin').'<br />';
                         $statusstr .= get_string('because', 'plagiarism_turnitin').'<br />"'.$errorstring.'"';
-                        $output .= html_writer::tag('div', $OUTPUT->pix_icon('tiiIcon', $statusstr, 'plagiarism_turnitin', array('class' => 'icon_size')).$statusstr,
+                        $info .= html_writer::tag('div', $OUTPUT->pix_icon('tiiIcon', $statusstr, 'plagiarism_turnitin', array('class' => 'icon_size')).$statusstr,
                             array('class' => 'turnitin_status'));
 
+                        if ($usehover) {
+
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
+                            $info .= html_writer::end_tag('div'); // Close tii_notice_hover_outer div.
+                        }
+
+                        // Now add info to output.
+                        $output .= $info;
                     } else {
                         $statusstr = get_string('turnitinstatus', 'plagiarism_turnitin').': '.get_string('pending', 'plagiarism_turnitin');
                         $output .= html_writer::tag('div', $OUTPUT->pix_icon('tiiIcon', $statusstr, 'plagiarism_turnitin', array('class' => 'icon_size')).$statusstr,
