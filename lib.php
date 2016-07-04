@@ -1043,7 +1043,7 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                 'div',
                                 $erroricon.' '.get_string('resubmittoturnitin', 'plagiarism_turnitin'),
                                 array(
-                                    'class' => 'warning clear pp_resubmit_link',
+                                    'class' => 'clear pp_resubmit_link',
                                     'id' => 'pp_resubmit_'.$plagiarismfile->id
                                 )
                             );
