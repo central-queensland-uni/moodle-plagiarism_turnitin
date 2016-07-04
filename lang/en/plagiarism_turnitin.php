@@ -148,6 +148,7 @@ $string['faultcode'] = 'Fault Code';
 $string['line'] = 'Line';
 $string['message'] = 'Message';
 $string['code'] = 'Code';
+$string['tiiassignmentgeterror'] = 'There was an error when trying to get an assignment from Turnitin';
 $string['tiisubmissionsgeterror'] = 'There was an error when trying to get submissions for this assignment from Turnitin';
 $string['errorcode0'] = 'This file has not been submitted to Turnitin, please consult your system administrator';
 $string['errorcode1'] = 'This file has not been sent to Turnitin as it does not have enough content to produce an Originality Report.';
