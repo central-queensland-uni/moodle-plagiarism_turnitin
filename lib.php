@@ -1008,7 +1008,7 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                 $errorstring,
                                 'plagiarism_turnitin'
                             ),
-                            array('title' => $errorstring, 'class' => 'tii_tooltip tii_error_icon')
+                            array('class' => 'tii_tooltip tii_error_icon')
                         );
 
                         // Next check whether we are a tutor or student.
@@ -1039,6 +1039,7 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                         } else { // Teacher.
 
                             // Resubmit link.
+                            $output .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_outer'));
                             $output .= html_writer::tag(
                                 'div',
                                 $erroricon.' '.get_string('resubmittoturnitin', 'plagiarism_turnitin'),
@@ -1047,6 +1048,14 @@ class plagiarism_plugin_turnitin extends plagiarism_plugin {
                                     'id' => 'pp_resubmit_'.$plagiarismfile->id
                                 )
                             );
+                            $output .= html_writer::start_tag('div', array('class' => 'tii_notice_hover_inner tooltipster-default'));
+                            $output .= html_writer::tag(
+                                'div',
+                                $errorstring,
+                                array('class' => 'tooltipster-content clear')
+                            );
+                            $output .= html_writer::end_tag('div'); // Close tii_notice_hover_inner div.
+                            $output .= html_writer::end_tag('div'); // Close tii_notice_hover_outer div.
 
                             $loadingicon = $OUTPUT->pix_icon('loading', $errorstring, 'plagiarism_turnitin');
 
